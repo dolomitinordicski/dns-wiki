@@ -1,0 +1,10 @@
+/* DNS Foundation adapter — PROVISIONAL, not a new design system.
+   Only the #AAD0D1 reference is confirmed in the project specification.
+   Import verified tokens and actual swoosh from dns-shared-data PR #262
+   before visual sign-off and production publication. */
+:root {
+  --dns-light-reference: #AAD0D1;
+  --sl-font: 'Be Vietnam Pro Variable', 'Roboto Variable', sans-serif;
+}
+main { line-height: 1.65; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--dns-light-reference); outline-offset: 3px; }
