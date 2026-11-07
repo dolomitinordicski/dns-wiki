@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "base": "/dns-wiki/",
+  "locales": [
+    "it",
+    "de",
+    "en"
+  ],
+  "tools": [
+    {
+      "id": "workspace",
+      "path": "workspace",
+      "enabledInFoundation": false,
+      "contextPages": {}
+    },
+    {
+      "id": "data-entry",
+      "path": "data-entry",
+      "enabledInFoundation": false,
+      "contextPages": {}
+    },
+    {
+      "id": "flyer-studio",
+      "path": "flyer-studio",
+      "enabledInFoundation": false,
+      "contextPages": {}
+    },
+    {
+      "id": "analytics",
+      "path": "analytics",
+      "enabledInFoundation": false,
+      "contextPages": {}
+    },
+    {
+      "id": "faktura",
+      "path": "faktura",
+      "enabledInFoundation": false,
+      "contextPages": {}
+    },
+    {
+      "id": "polls",
+      "path": "polls",
+      "enabledInFoundation": false,
+      "contextPages": {}
+    },
+    {
+      "id": "partner-hub",
+      "path": "partner-hub",
+      "enabledInFoundation": false,
+      "contextPages": {}
+    },
+    {
+      "id": "digital-pass",
+      "path": "digital-pass",
+      "enabledInFoundation": false,
+      "contextPages": {}
+    }
+  ]
+}
