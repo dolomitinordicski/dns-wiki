@@ -8,7 +8,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:routes": "node scripts/check-routes.mjs",
-    "check": "npm run check:routes && npm run build"
+    "check": "npm run check:routes && npm run build",
+    "sync:foundation": "node scripts/sync-foundation-tokens.mjs",
+    "prebuild": "npm run sync:foundation",
+    "predev": "npm run sync:foundation"
   },
   "dependencies": {
     "astro": "^5.0.0",
@@ -18,5 +21,8 @@
   },
   "engines": {
     "node": ">=22.19.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
   }
 }
