@@ -13,6 +13,7 @@ export default defineConfig({
       Footer: './src/components/DNSFooter.astro',
     },
     customCss: [
+      './src/styles/generated/foundation-tokens.css',
       '@fontsource/be-vietnam-pro/400.css',
       '@fontsource/be-vietnam-pro/600.css',
       '@fontsource/roboto/400.css',
