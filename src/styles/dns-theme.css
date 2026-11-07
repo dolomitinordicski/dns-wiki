@@ -4,7 +4,7 @@
    before visual sign-off and production publication. */
 :root {
   --dns-light-reference: #AAD0D1;
-  --sl-font: 'Be Vietnam Pro Variable', 'Roboto Variable', sans-serif;
+  --sl-font: 'Be Vietnam Pro', 'Roboto', sans-serif;
 }
 main { line-height: 1.65; }
 a:focus-visible, button:focus-visible { outline: 3px solid var(--dns-light-reference); outline-offset: 3px; }
