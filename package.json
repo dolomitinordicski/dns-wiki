@@ -17,6 +17,6 @@
     "@fontsource/roboto": "^5.2.0"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.19.0"
   }
 }
