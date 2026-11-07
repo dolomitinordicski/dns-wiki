@@ -8,6 +8,10 @@ export default defineConfig({
     title: 'DNS Wiki',
     defaultLocale: 'it',
     locales: { it: { label: 'Italiano' }, de: { label: 'Deutsch' }, en: { label: 'English' } },
+    components: {
+      Header: './src/components/DNSHeader.astro',
+      Footer: './src/components/DNSFooter.astro',
+    },
     customCss: [
       '@fontsource/be-vietnam-pro/400.css',
       '@fontsource/be-vietnam-pro/600.css',
