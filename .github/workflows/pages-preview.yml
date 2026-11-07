@@ -1,0 +1,41 @@
+# Manual deployment only. No push/PR trigger and no scheduled publication.
+# Run only after explicit authorization: AUTORIZZO DEPLOY PR #...
+name: DNS Wiki — publish controlled Pages preview
+on:
+  workflow_dispatch:
+    inputs:
+      release_confirmation:
+        description: 'Enter APPROVED-WIKI-PREVIEW after receiving explicit release authorization'
+        required: true
+        type: string
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: dns-wiki-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    if: ${{ inputs.release_confirmation == 'APPROVED-WIKI-PREVIEW' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run check
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/
+  deploy:
+    if: ${{ inputs.release_confirmation == 'APPROVED-WIKI-PREVIEW' }}
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
