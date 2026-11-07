@@ -9,8 +9,9 @@ export default defineConfig({
     defaultLocale: 'it',
     locales: { it: { label: 'Italiano' }, de: { label: 'Deutsch' }, en: { label: 'English' } },
     customCss: [
-      '@fontsource-variable/be-vietnam-pro',
-      '@fontsource-variable/roboto',
+      '@fontsource/be-vietnam-pro/400.css',
+      '@fontsource/be-vietnam-pro/600.css',
+      '@fontsource/roboto/400.css',
       './src/styles/dns-theme.css',
     ],
     sidebar: [{label:'DNS Tools',translations:{de:'DNS Werkzeuge',en:'DNS Tools'},items:[
