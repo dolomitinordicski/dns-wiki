@@ -8,11 +8,11 @@ const copy = {
 }[locale] || {help:'Support',guide:'User guides',rights:'Dolomiti NordicSki · Official documentation'};
 ---
 <DefaultFooter {...Astro.props}><slot /></DefaultFooter>
-<footer class="dns-wiki-footer" aria-label="Dolomiti NordicSki">
-  <div class="dns-wiki-footer__inner">
-    <div class="dns-wiki-footer__brand">
+<footer data-dns-tool-footer aria-label="Dolomiti NordicSki">
+  <div class="dns-tool-footer-shell">
+    <div class="dns-tool-footer-primary">
       <strong>DNS Wiki</strong>
-      <span>{copy.rights}</span>
+      <span class="dns-tool-footer-meta">{copy.rights}</span>
     </div>
     <nav aria-label={copy.guide}>
       <a href={`${import.meta.env.BASE_URL}${locale}/`}>{copy.guide}</a>
