@@ -1,6 +1,18 @@
 ---
 import DefaultHeader from '@astrojs/starlight/components/Header.astro';
+const base=import.meta.env.BASE_URL;
+const locale=Astro.url.pathname.split('/').filter(Boolean)[1] || 'it';
 ---
 <div class="dns-foundation-header" data-dns-tool-header>
-  <DefaultHeader {...Astro.props} />
+  <div class="dns-tool-header-shell">
+    <a class="dns-tool-header-brand" href={`${base}${locale}/`} aria-label="Dolomiti NordicSki Wiki">
+      <img class="dns-tool-header-logo" src={`${base}assets/dns/logo-web.png`} alt="Dolomiti NordicSki" width="120" height="40" />
+      <span class="dns-tool-header-identity">
+        <span class="dns-tool-header-title">DNS Wiki</span>
+      </span>
+    </a>
+    <div class="dns-wiki-starlight-controls">
+      <DefaultHeader {...Astro.props} />
+    </div>
+  </div>
 </div>
