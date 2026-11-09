@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/check-built-routes.mjs",
     "preview": "astro preview",
     "check:routes": "node scripts/check-routes.mjs",
     "check:foundation": "node scripts/foundation-lock.mjs --installed && node --test tests/foundation-integration.test.mjs",
