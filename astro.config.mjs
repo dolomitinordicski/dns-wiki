@@ -14,6 +14,7 @@ export default defineConfig({
     },
     customCss: [
       './src/styles/generated/foundation-tokens.css',
+      './src/styles/generated/foundation-components.css',
       '@fontsource/be-vietnam-pro/400.css',
       '@fontsource/be-vietnam-pro/600.css',
       '@fontsource/roboto/400.css',
