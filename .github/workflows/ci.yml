@@ -1,25 +1,35 @@
-name: DNS Wiki migration lock generation
+name: DNS Wiki CI
 on:
+  pull_request:
   push:
-    branches: [codex/wiki-foundation-package]
+    branches: [main]
 permissions:
-  contents: write
+  contents: read
+concurrency:
+  group: wiki-ci-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  generate-lock:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref_name }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Generate npm lockfile from dependency manifest
-        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-      - name: Commit generated npm lockfile to migration branch
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package-lock.json
-          git diff --cached --quiet || git commit -m "chore: generate Wiki dependency lockfile with npm"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+      - name: Verify exact Foundation release lock
+        run: node scripts/foundation-lock.mjs
+      - run: npm ci --no-audit --no-fund
+      - run: node --test scripts/foundation-lock.test.mjs
+      - run: npm run check
+      - name: Install Chromium for document integration checks
+        run: npx playwright install --with-deps chromium
+      - name: Verify Foundation UI, locales and document navigation
+        run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wiki-foundation-browser-evidence
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
