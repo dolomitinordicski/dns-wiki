@@ -116,7 +116,7 @@ const primitivesCss=extractStyle(primitives,'primitives');
 if(!primitivesCss.includes('.dns-card{')||!navCss.includes('.dns-tool-header-shell')||!footerCss.includes('.dns-tool-footer-shell')) throw new Error('Canonical Foundation CSS contract missing');
 await writeFile('src/styles/generated/foundation-components.css',
   '/* GENERATED from pinned DNS Foundation navigation/footer/primitives runtime. */\n'+
-  navCss+'\\n'+footerCss+'\\n'+primitivesCss+'\\n');
+  navCss+'\n'+footerCss+'\n'+primitivesCss+'\n');
 
 await mkdir('public/assets/dns',{recursive:true});
 for (const [sourcePath,targetPath] of [
