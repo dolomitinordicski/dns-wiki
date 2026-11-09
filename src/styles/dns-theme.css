@@ -1,51 +1,33 @@
-/* Starlight ↔ DNS Foundation compatibility ONLY.
-   Corporate tokens and actual .dns-card/header/footer component CSS are generated
-   at build time from pinned Shared Data sources. Never duplicate their styling here. */
-:root {
-  --sl-font:var(--font-body);
-  --sl-color-accent-low:var(--color-dns-light);
-  --sl-color-accent:var(--color-dns-mid);
-  --sl-color-accent-high:var(--color-dns-deep);
-  --sl-color-bg:var(--color-dns-bg);
-  --sl-color-bg-nav:var(--color-dns-surface);
-  --sl-color-bg-sidebar:var(--color-dns-surface);
-  --sl-color-text:var(--color-dns-dark-text);
+/* Starlight layout/semantic-role adapter. Foundation owns every visual value,
+   component style and theme; never add a local palette or component skin. */
+:root, :root[data-theme='light'], :root[data-theme='dark'] {
+  --sl-font: var(--font-body);
+  --sl-font-system: var(--font-body);
+  --sl-color-bg: var(--dns-theme-bg);
+  --sl-color-bg-nav: var(--dns-theme-surface);
+  --sl-color-bg-sidebar: var(--dns-theme-surface);
+  --sl-color-text: var(--dns-theme-text);
+  --sl-color-text-accent: var(--color-dns-deep);
+  --sl-color-accent-low: var(--dns-theme-surface-alt);
+  --sl-color-accent: var(--color-dns-mid);
+  --sl-color-accent-high: var(--dns-theme-text);
+  --sl-color-white: var(--dns-theme-text);
+  --sl-color-black: var(--dns-theme-surface);
+  --sl-color-gray-1: var(--dns-theme-text);
+  --sl-color-gray-2: var(--dns-theme-text);
+  --sl-color-gray-3: var(--dns-theme-text-muted);
+  --sl-color-gray-4: var(--dns-theme-border);
+  --sl-color-gray-5: var(--dns-theme-surface-alt);
+  --sl-color-gray-6: var(--dns-theme-bg);
+  --sl-color-gray-7: var(--dns-theme-control-bg);
 }
-:root[data-theme='dark'] {
-  --sl-color-bg:#101C24;
-  --sl-color-bg-nav:#101C24;
-  --sl-color-bg-sidebar:#101C24;
-  --sl-color-text:#EAF1F2;
-  --sl-color-accent:var(--color-dns-light);
-  --sl-color-accent-high:#EAF1F2;
-  --sl-color-accent-low:var(--color-dns-primary-dark);
-}
-body {font-family:var(--font-body);}
-a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(--color-dns-mid);outline-offset:2px;}
-/* The corporate header is the Foundation header. The right-hand section keeps
-   Starlight's search, sidebar button, locale and appearance controls functional. */
-.dns-foundation-header .dns-tool-header-shell {min-height:var(--dns-header-logo-height);gap:var(--dns-card-gap);}
-.dns-foundation-header .dns-tool-header-brand {color:var(--dns-header-title-color);text-decoration:none;flex-shrink:0;}
-.dns-foundation-header .dns-tool-header-title {font-family:var(--font-display);font-size:var(--dns-heading-size);font-weight:700;color:var(--dns-header-title-color);text-transform:uppercase;letter-spacing:var(--dns-uppercase-tracking);}
-.dns-wiki-starlight-controls {min-width:0;flex:1;}
-.dns-wiki-starlight-controls .header {position:static;min-height:0;padding:0;border:none;box-shadow:none;background:transparent;grid-template-columns:minmax(0,1fr);}
-.dns-wiki-starlight-controls .site-title {display:none;}
-.dns-wiki-starlight-controls :is(a,button) {color:var(--dns-header-title-color);}
-.dns-wiki-starlight-controls .search-input {color:var(--color-dns-dark-text);}
-.dns-foundation-header::after {background-image:url('/dns-wiki/assets/dns/swoosh.svg');}
-.dns-foundation-header :is(a,button):focus-visible {outline-color:var(--dns-header-title-color);}
-.dns-tool-footer-shell nav {display:flex;flex-wrap:wrap;gap:var(--dns-card-gap);align-items:center;}
-[data-dns-tool-footer] a {color:#fff;text-decoration:underline;text-underline-offset:3px;}
-/* Layout-only: actual card appearance is defined by Foundation .dns-card. */
-.dns-wiki-tools {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--dns-card-gap);margin:var(--dns-page-y) 0;}
-.dns-wiki-tool {display:flex;flex-direction:column;gap:var(--dns-card-gap);padding:var(--dns-card-padding);min-width:0;min-height:6rem;border-left:4px solid var(--dns-card-accent);text-decoration:none!important;}
-.dns-wiki-tool:hover,.dns-wiki-tool:focus-visible{border-left-color:var(--dns-card-accent-strong);}
-.dns-wiki-tool strong{font:600 1rem var(--font-display);color:var(--color-dns-deep);}
-.dns-wiki-tool span{font:400 .85rem var(--font-alt);color:var(--color-dns-muted);}
-.dns-wiki-home-support {border-left:4px solid var(--dns-card-accent);padding:var(--dns-card-padding);}
-:root[data-theme='dark'] .dns-wiki-tool,:root[data-theme='dark'] .dns-wiki-home-support{background:var(--color-dns-primary-dark);}
-:root[data-theme='dark'] .dns-wiki-tool strong{color:#EAF1F2;}
-:root[data-theme='dark'] .dns-wiki-tool span{color:var(--color-dns-light);}
-@media(max-width:1023px){.dns-wiki-tools{grid-template-columns:repeat(2,minmax(0,1fr));}}
-@media(max-width:767px){.dns-wiki-tools{grid-template-columns:1fr;}.dns-tool-header-title{font-size:1rem;}.dns-foundation-header .dns-tool-header-shell{gap:var(--dns-compact-gap);}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+.dns-wiki-starlight-controls { min-width: 0; flex: 1; }
+.dns-wiki-starlight-controls .header { position: static; min-height: 0; padding: 0; grid-template-columns: minmax(0, 1fr) auto; }
+.dns-wiki-starlight-controls .title-wrapper { display: none; }
+.dns-tool-header-brand { text-decoration: none; flex-shrink: 0; }
+.dns-tool-header-brand, .dns-tool-header-controls { margin: 0; }
+.dns-wiki-starlight-controls :is(select, button[data-open-modal]) { color: var(--dns-header-title-color); }
+.dns-wiki-starlight-controls select option { color: var(--dns-theme-control-text); background: var(--dns-theme-control-bg); }
+.dns-wiki-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--dns-card-gap); margin-block: var(--dns-page-y); }
+.dns-wiki-tool { display: flex; flex-direction: column; gap: var(--dns-card-gap); padding: var(--dns-card-padding); min-width: 0; text-decoration: none; }
+.dns-wiki-home-support { padding: var(--dns-card-padding); }
