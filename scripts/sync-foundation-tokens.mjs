@@ -92,7 +92,7 @@ const extractStyle = (source, label) => {
   const body = source.slice(start + marker.length);
   const end = body.indexOf(String.fromCharCode(96) + ';');
   if (end < 0) throw new Error('Foundation style template terminator missing: ' + label);
-  return body.slice(0,end).replaceAll('\\\\n', '\\n');
+  return body.slice(0,end).replaceAll('\\n', '\n');
 };
 const navValues = {
   'desktopTabs.tabPaddingYRem': ds.responsive.tabs.desktop.tabPaddingYRem,
@@ -106,7 +106,7 @@ const navValues = {
   'desktop': ds.responsive.breakpointsPx.desktopMin,
   'desktop - 1': ds.responsive.breakpointsPx.desktopMin - 1,
 };
-const navCss = extractStyle(navigation,'navigation').replace(/\\$\\{([^}]+)\\}/g, (match,expr)=>{
+const navCss = extractStyle(navigation,'navigation').replace(/\$\{([^}]+)\}/g, (match,expr)=>{
   const v=navValues[expr.trim()];
   if(v===undefined) throw new Error('Unexpected Foundation navigation token: '+expr);
   return String(v);
@@ -115,7 +115,7 @@ const footerCss=extractStyle(footer,'footer');
 const primitivesCss=extractStyle(primitives,'primitives');
 if(!primitivesCss.includes('.dns-card{')||!navCss.includes('.dns-tool-header-shell')||!footerCss.includes('.dns-tool-footer-shell')) throw new Error('Canonical Foundation CSS contract missing');
 await writeFile('src/styles/generated/foundation-components.css',
-  '/* GENERATED from pinned DNS Foundation navigation/footer/primitives runtime. */\\n'+
+  '/* GENERATED from pinned DNS Foundation navigation/footer/primitives runtime. */\n'+
   navCss+'\\n'+footerCss+'\\n'+primitivesCss+'\\n');
 
 await mkdir('public/assets/dns',{recursive:true});
