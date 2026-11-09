@@ -19,9 +19,10 @@ const source = await import(`data:text/javascript;base64,${Buffer.from(code).toS
 const ds = source.DNS_DESIGN_SYSTEM;
 if (!ds || ds.version !== '1.25.0') throw new Error('Unexpected DNS Design System version; stop instead of silently drifting');
 
-const [navigation, footer] = await Promise.all([
+const [navigation, footer, primitives] = await Promise.all([
   read('src/ui/navigation.ts').then(r=>r.text()),
-  read('src/ui/footer.ts').then(r=>r.text())
+  read('src/ui/footer.ts').then(r=>r.text()),
+  read('src/ui/primitives.ts').then(r=>r.text())
 ]);
 const gradient = (source, selector) => {
   const start = source.indexOf(selector);
@@ -78,6 +79,45 @@ ${Object.entries(tokens).map(([k,v])=>`  ${k}: ${v};`).join('\n')}
 `;
 await mkdir('src/styles/generated',{recursive:true});
 await writeFile('src/styles/generated/foundation-tokens.css', css);
+
+/**
+ * Rather than copying a handful of colors, build the actual Foundation
+ * CSS rules from the pinned runtime sources. These are the CSS templates
+ * used by DNS Core/Shared Data and contain the official component geometry.
+ */
+const extractStyle = (source, label) => {
+  const marker = 'style.textContent = ' + String.fromCharCode(96);
+  const start = source.indexOf(marker);
+  if (start < 0) throw new Error('Foundation style template missing: ' + label);
+  const body = source.slice(start + marker.length);
+  const end = body.indexOf(String.fromCharCode(96) + ';');
+  if (end < 0) throw new Error('Foundation style template terminator missing: ' + label);
+  return body.slice(0,end).replaceAll('\\\\n', '\\n');
+};
+const navValues = {
+  'desktopTabs.tabPaddingYRem': ds.responsive.tabs.desktop.tabPaddingYRem,
+  'desktopTabs.tabPaddingXRem': ds.responsive.tabs.desktop.tabPaddingXRem,
+  'tabletTabs.tabPaddingYRem': ds.responsive.tabs.tablet.tabPaddingYRem,
+  'tabletTabs.tabPaddingXRem': ds.responsive.tabs.tablet.tabPaddingXRem,
+  'mobileTabs.tabPaddingYRem': ds.responsive.tabs.mobile.tabPaddingYRem,
+  'mobileTabs.tabPaddingXRem': ds.responsive.tabs.mobile.tabPaddingXRem,
+  'navigation.tabs.transitionMs': ds.navigation.tabs.transitionMs,
+  'mobileMax': ds.responsive.breakpointsPx.mobileMax,
+  'desktop': ds.responsive.breakpointsPx.desktopMin,
+  'desktop - 1': ds.responsive.breakpointsPx.desktopMin - 1,
+};
+const navCss = extractStyle(navigation,'navigation').replace(/\\$\\{([^}]+)\\}/g, (match,expr)=>{
+  const v=navValues[expr.trim()];
+  if(v===undefined) throw new Error('Unexpected Foundation navigation token: '+expr);
+  return String(v);
+}).replaceAll('https://raw.githubusercontent.com/dolomitinordicski/dns-shared-data/foundation-v1.3.0/graphics/swoosh.svg','/dns-wiki/assets/dns/swoosh.svg');
+const footerCss=extractStyle(footer,'footer');
+const primitivesCss=extractStyle(primitives,'primitives');
+if(!primitivesCss.includes('.dns-card{')||!navCss.includes('.dns-tool-header-shell')||!footerCss.includes('.dns-tool-footer-shell')) throw new Error('Canonical Foundation CSS contract missing');
+await writeFile('src/styles/generated/foundation-components.css',
+  '/* GENERATED from pinned DNS Foundation navigation/footer/primitives runtime. */\\n'+
+  navCss+'\\n'+footerCss+'\\n'+primitivesCss+'\\n');
+
 await mkdir('public/assets/dns',{recursive:true});
 for (const [sourcePath,targetPath] of [
   ['brand/logo-web.png','public/assets/dns/logo-web.png'],
