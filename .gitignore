@@ -6,3 +6,5 @@ node_modules/
 # Generated from pinned Foundation source during build
 src/styles/generated/foundation-tokens.css
 public/assets/dns/logo-web.png
+
+src/styles/generated/foundation-components.css

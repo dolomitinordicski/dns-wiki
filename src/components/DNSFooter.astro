@@ -1,22 +1,22 @@
 ---
 import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
-const locale = Astro.url.pathname.split('/').filter(Boolean)[1] || 'it';
-const copy = {
-  it: {help:'Supporto',guide:'Guide operative',rights:'Dolomiti NordicSki · Documentazione ufficiale'},
-  de: {help:'Support',guide:'Bedienungsanleitungen',rights:'Dolomiti NordicSki · Offizielle Dokumentation'},
-  en: {help:'Support',guide:'User guides',rights:'Dolomiti NordicSki · Official documentation'},
-}[locale] || {help:'Support',guide:'User guides',rights:'Dolomiti NordicSki · Official documentation'};
+const base=import.meta.env.BASE_URL;
+const locale=Astro.url.pathname.split('/').filter(Boolean)[1] || 'it';
+const copy={
+  it:{help:'Supporto',guide:'Guida',rights:'Dolomiti NordicSki · Documentazione'},
+  de:{help:'Support',guide:'Anleitung',rights:'Dolomiti NordicSki · Dokumentation'},
+  en:{help:'Support',guide:'Help',rights:'Dolomiti NordicSki · Documentation'},
+}[locale]||{help:'Support',guide:'Help',rights:'Dolomiti NordicSki · Documentation'};
 ---
-<DefaultFooter {...Astro.props}><slot /></DefaultFooter>
+<DefaultFooter {...Astro.props} />
 <footer data-dns-tool-footer aria-label="Dolomiti NordicSki">
+  <img class="dns-footer-graphic" src={`${base}assets/dns/swoosh.svg`} alt="" aria-hidden="true" width="230" height="134" loading="lazy"/>
   <div class="dns-tool-footer-shell">
-    <div class="dns-tool-footer-primary">
-      <strong>DNS Wiki</strong>
-      <span class="dns-tool-footer-meta">{copy.rights}</span>
-    </div>
-    <nav aria-label={copy.guide}>
-      <a href={`${import.meta.env.BASE_URL}${locale}/`}>{copy.guide}</a>
+    <span class="dns-tool-footer-primary">{copy.rights}</span>
+    <nav class="dns-tool-footer-meta" aria-label={copy.guide}>
+      <a href={`${base}${locale}/`}>{copy.guide}</a>
       <a href="mailto:info@dolomitinordicski.com">{copy.help}</a>
+      <span>Foundation 1.4.0</span>
     </nav>
   </div>
 </footer>
