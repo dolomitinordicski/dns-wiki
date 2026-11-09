@@ -88,6 +88,11 @@ jobs:
           fi
           npm run test --if-present
           npm run lint --if-present
+      - name: Verify Wiki browser compatibility before opening update PR
+        if: steps.latest.outputs.needs_update == 'true'
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:browser
       - name: Open or refresh verified Foundation update PR
         if: steps.latest.outputs.needs_update == 'true'
         uses: peter-evans/create-pull-request@v7
