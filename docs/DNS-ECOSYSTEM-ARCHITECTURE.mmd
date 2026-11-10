@@ -1,0 +1,49 @@
+flowchart TB
+  subgraph GOVERNANCE["Governance & sicurezza"]
+    ADMIN["DNS Admin / autorizzazioni"]
+    GITHUB["GitHub • PR • CI/CD • Environments"]
+    IAM["Google Cloud IAM • Service Accounts"]
+  end
+  subgraph PLATFORM["Piattaforma condivisa"]
+    FOUNDATION["DNS Foundation\nDesign tokens • UI"]
+    CORE["DNS Core\nServizi comuni / integrazione"]
+    SHARED["DNS Shared Data\nContratti • dati • release"]
+    IDENTITY["DNS Identity\nGoogle Sign-in • ruoli • scope"]
+  end
+  subgraph EXPERIENCE["Accesso"]
+    WORKSPACE["DNS Workspace\nShell • navigazione • autorizzazioni"]
+    ADMINWIKI["Admin Handbook\nBackend privato • DNS Admin only"]
+    WIKI["DNS Wiki pubblica\nAstro/Starlight • GitHub Pages"]
+  end
+  subgraph TOOLS["Applicazioni"]
+    DATA["Data Entry / FAIR"]
+    FLYER["Flyer Studio"]
+    ANALYTICS["Analytics"]
+    FAKTURA["Faktura"]
+    POLLS["Polls"]
+    HUB["Partner Hub"]
+    PASS["Digital Pass"]
+  end
+  subgraph CLOUD["Persistenza & integrazioni"]
+    FIREBASE["Firebase Auth / Firestore / Storage / Functions"]
+    EXTERNAL["LTS • Priot • Contwise • Brevo • Wallet"]
+  end
+  FOUNDATION -. "token e componenti" .-> WORKSPACE
+  FOUNDATION -.-> TOOLS
+  CORE -. "servizi condivisi" .-> WORKSPACE
+  CORE -.-> TOOLS
+  SHARED --> TOOLS
+  IDENTITY --> WORKSPACE
+  WORKSPACE --> TOOLS
+  WORKSPACE --> ADMINWIKI
+  WORKSPACE --> WIKI
+  IDENTITY --> FIREBASE
+  TOOLS <--> FIREBASE
+  TOOLS <--> EXTERNAL
+  ADMIN --> ADMINWIKI
+  GITHUB -. "release" .-> PLATFORM
+  IAM -. "accesso cloud" .-> FIREBASE
+  classDef private fill:#f5dfdf,stroke:#9c4141,color:#442323
+  classDef shared fill:#d7eded,stroke:#347b7e,color:#153f41
+  class ADMINWIKI private
+  class FOUNDATION,CORE,SHARED,IDENTITY shared
