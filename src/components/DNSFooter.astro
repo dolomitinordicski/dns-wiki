@@ -1,22 +1,9 @@
 ---
 import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
-const base=import.meta.env.BASE_URL;
-const locale=Astro.url.pathname.split('/').filter(Boolean)[1] || 'it';
-const copy={
-  it:{help:'Supporto',guide:'Guida',rights:'Dolomiti NordicSki · Documentazione'},
-  de:{help:'Support',guide:'Anleitung',rights:'Dolomiti NordicSki · Dokumentation'},
-  en:{help:'Support',guide:'Help',rights:'Dolomiti NordicSki · Documentation'},
-}[locale]||{help:'Support',guide:'Help',rights:'Dolomiti NordicSki · Documentation'};
+import { renderFoundationFooter } from '../lib/foundation-server.mjs';
+import { version } from '../../package.json';
+const locale = Astro.locals.starlightRoute?.locale || 'it';
+const footer = renderFoundationFooter({ locale, toolVersion: version });
 ---
 <DefaultFooter {...Astro.props} />
-<footer data-dns-tool-footer aria-label="Dolomiti NordicSki">
-  <img class="dns-footer-graphic" src={`${base}assets/dns/swoosh.svg`} alt="" aria-hidden="true" width="230" height="134" loading="lazy"/>
-  <div class="dns-tool-footer-shell">
-    <span class="dns-tool-footer-primary">{copy.rights}</span>
-    <nav class="dns-tool-footer-meta" aria-label={copy.guide}>
-      <a href={`${base}${locale}/`}>{copy.guide}</a>
-      <a href="mailto:info@dolomitinordicski.com">{copy.help}</a>
-      <span>Foundation 1.4.0</span>
-    </nav>
-  </div>
-</footer>
+<Fragment set:html={footer} />

@@ -9,12 +9,13 @@ export default defineConfig({
     defaultLocale: 'it',
     locales: { it: { label: 'Italiano' }, de: { label: 'Deutsch' }, en: { label: 'English' } },
     components: {
+      Head: './src/components/DNSHead.astro',
       Header: './src/components/DNSHeader.astro',
+      ThemeSelect: './src/components/DNSThemeSelect.astro',
       Footer: './src/components/DNSFooter.astro',
     },
     customCss: [
-      './src/styles/generated/foundation-tokens.css',
-      './src/styles/generated/foundation-components.css',
+      './src/styles/generated/foundation.css',
       '@fontsource/be-vietnam-pro/400.css',
       '@fontsource/be-vietnam-pro/600.css',
       '@fontsource/roboto/400.css',

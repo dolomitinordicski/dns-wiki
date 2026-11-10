@@ -1,0 +1,22 @@
+---
+import DefaultHead from '@astrojs/starlight/components/Head.astro';
+import { DNS_FOUNDATION_RUNTIME_VERSION } from '../lib/foundation-server.mjs';
+---
+<DefaultHead {...Astro.props} />
+<meta name="dns-foundation-version" content={DNS_FOUNDATION_RUNTIME_VERSION} />
+<script is:inline>
+  // First-paint bridge only. Preference storage and subsequent updates belong
+  // to the installed Foundation accessibility runtime.
+  (() => {
+    let preference = 'system';
+    try {
+      const stored = JSON.parse(localStorage.getItem('dns-accessibility-v1') || '{}');
+      if (stored.theme === 'light' || stored.theme === 'dark') preference = stored.theme;
+    } catch {}
+    const theme = preference === 'system'
+      ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : preference;
+    document.documentElement.dataset.dnsTheme = theme;
+    document.documentElement.dataset.theme = theme;
+  })();
+</script>

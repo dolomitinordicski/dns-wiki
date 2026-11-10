@@ -1,28 +1,32 @@
 {
   "name": "dns-wiki",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/check-built-routes.mjs",
     "preview": "astro preview",
     "check:routes": "node scripts/check-routes.mjs",
-    "check": "npm run check:routes && npm run build",
-    "sync:foundation": "node scripts/sync-foundation-tokens.mjs",
-    "prebuild": "npm run sync:foundation",
-    "predev": "npm run sync:foundation"
+    "check:foundation": "node scripts/foundation-lock.mjs --installed && node --test tests/foundation-integration.test.mjs",
+    "check": "npm run check:routes && npm run check:foundation && npm run build",
+    "validate": "npm run check",
+    "test:browser": "playwright test",
+    "prebuild": "node scripts/render-foundation.mjs",
+    "predev": "node scripts/render-foundation.mjs"
   },
   "dependencies": {
     "astro": "^5.0.0",
     "@astrojs/starlight": "^0.36.0",
     "@fontsource/be-vietnam-pro": "^5.3.0",
-    "@fontsource/roboto": "^5.2.0"
+    "@fontsource/roboto": "^5.2.0",
+    "@dolomitinordicski/dns-shared-data": "github:dolomitinordicski/dns-shared-data#foundation-v1.4.1"
   },
   "engines": {
     "node": ">=22.19.0"
   },
   "devDependencies": {
-    "esbuild": "^0.25.0"
+    "linkedom": "^0.18.12",
+    "@playwright/test": "1.56.1"
   }
 }

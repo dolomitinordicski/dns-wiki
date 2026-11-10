@@ -2,9 +2,6 @@
 dist/
 node_modules/
 .DS_Store
-
-# Generated from pinned Foundation source during build
-src/styles/generated/foundation-tokens.css
-public/assets/dns/logo-web.png
-
-src/styles/generated/foundation-components.css
+src/styles/generated/
+playwright-report/
+test-results/

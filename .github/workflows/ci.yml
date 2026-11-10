@@ -1,18 +1,35 @@
-name: DNS Wiki CI (no deployment)
+name: DNS Wiki CI
 on:
   pull_request:
   push:
-    branches-ignore:
-      - main
+    branches: [main]
 permissions:
   contents: read
+concurrency:
+  group: wiki-ci-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --no-audit --no-fund
+      - name: Verify exact Foundation release lock
+        run: node scripts/foundation-lock.mjs
+      - run: npm ci --no-audit --no-fund
+      - run: node --test scripts/foundation-lock.test.mjs
       - run: npm run check
+      - name: Install Chromium for document integration checks
+        run: npx playwright install --with-deps chromium
+      - name: Verify Foundation UI, locales and document navigation
+        run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wiki-foundation-browser-evidence
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
