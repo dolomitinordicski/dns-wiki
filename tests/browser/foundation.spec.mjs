@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { DNS_DESIGN_SYSTEM } from '@dolomitinordicski/dns-shared-data/design-system';
 import { DNS_FOUNDATION_RUNTIME_VERSION } from '@dolomitinordicski/dns-shared-data/foundation';
 
 for (const locale of ['it', 'de', 'en']) {
@@ -56,4 +57,14 @@ test('mobile documentation menu remains usable', async ({ page }) => {
   await expect(menu).toBeVisible();
   await menu.click();
   await expect(page.locator('#starlight__sidebar')).toBeVisible();
+});
+
+test('static document first paint uses package styles without JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto('http://127.0.0.1:4321/dns-wiki/it/');
+  await expect(page.locator('.dns-card').first()).toHaveCSS('border-radius', DNS_DESIGN_SYSTEM.shape.cardRadiusPx + 'px');
+  await expect(page.locator('[data-dns-tool-footer]')).toContainText('Foundation v' + DNS_FOUNDATION_RUNTIME_VERSION);
+  await expect(page.locator('.dns-tool-header-title')).toBeVisible();
+  await context.close();
 });
